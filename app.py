@@ -123,8 +123,22 @@ def analyze_description():
 
 
 all_skills = [
-    "python", "java", "javascript", "html", "css", "sql", "mongodb", "flask", "react", "node.js",
-    "data science", "machine learning"
+    "Python", "Java", "JavaScript", "C++", "C#", "Go", "Rust", "Ruby", "PHP", "Swift",
+        "Kotlin", "TypeScript", "Scala", "R", "MATLAB", "SQL", "NoSQL", "MongoDB", "PostgreSQL", "MySQL",
+        "React", "Angular", "Vue.js", "HTML", "CSS", "SASS", "Bootstrap", "Tailwind CSS", "jQuery",
+        "Node.js", "Express.js", "Django", "Flask", "Spring Boot", "Laravel", "ASP.NET",
+        "REST API", "GraphQL", "JSON", "AJAX", "FastAPI", "Git", "GitHub", "GitLab", "Docker",
+        "Kubernetes", "Jenkins", "CI/CD", "Ansible", "Terraform", "Vagrant", "AWS", "Azure", "Google Cloud",
+        "Linux", "Unix", "Windows Server", "Shell Scripting", "Bash", "PowerShell", "Machine Learning",
+        "Deep Learning", "TensorFlow", "PyTorch", "Scikit-learn", "Pandas", "NumPy", "Matplotlib", "Seaborn",
+        "Jupyter", "Keras", "XGBoost", "OpenCV", "Data Analysis", "Data Science", "Big Data", "Apache Spark",
+        "Hadoop", "Tableau", "Power BI", "Excel", "Google Analytics", "ETL", "Airflow", "Kafka", "dbt",
+        "Snowflake", "Looker", "Artificial Intelligence", "Natural Language Processing", "Computer Vision",
+        "Neural Networks", "Statistics", "Probability", "Mathematics", "Algorithms", "Data Structures",
+        "Problem Solving", "Project Management", "Agile", "Scrum", "Kanban", "JIRA", "Confluence", "Slack",
+        "Microsoft Teams", "Zoom", "Communication", "Leadership", "Team Management", "Time Management",
+        "Critical Thinking", "Analytical Thinking", "Creative Thinking", "Attention to Detail", "Multitasking",
+        "Adaptability", "Collaboration", "Presentation Skills", "Decision Making", "Self-Motivation"
 ]
 skill_variations = {"node.js": ["nodejs"], "data science": ["data-science"]}
 
