@@ -1,66 +1,389 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Resume Analyzer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Skill Matcher Dashboard</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #0d0b2b;
-            font-family: Arial, sans-serif;
-            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
         }
-        h2, p {
-            text-align: center;
-            color: #00ff99;
-        }
-        form {
-            text-align: center;
-        }
-        textarea {
-            width: 90%;
-            margin-left: 5%;
-            background-color: #1a1a40;
-            color: white;
-            padding: 10px;
-            border-radius: 10px;
-        }
+
         .container {
-            margin: auto;
-            width: 60%;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        input[type="submit"] {
-            margin-top: 20px;
-            background-color: #00cc66;
+
+        .header {
+            text-align: center;
             color: white;
-            padding: 12px 30px;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .upload-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            height: 100%;
+        }
+
+        .upload-section h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
             font-size: 16px;
-            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .file-input {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
+            padding: 12px 20px;
             cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .file-input:hover {
+            transform: translateY(-2px);
+        }
+
+        .file-input input[type="file"] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .results-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .results-section h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .skill-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .skill-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .skill-card:nth-child(2) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .skill-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .skill-card p {
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .score-display {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .score-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .resume-info {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .resume-info h3 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .resume-info .length {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: rgba(255,255,255,0.8);
+            border-radius: 5px;
+            transition: width 0.8s ease;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-state .icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .empty-state p {
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .skill-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+
+        .feature-highlight {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #fff;
+        }
+
+        .feature-highlight h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .feature-highlight p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>🎯 Resume Ranking and Screening System</h2>
-        <p>AI-Powered Resume Analysis with 98% Accuracy</p><br>
+        <div class="header">
+            <h1>🎯 Resume Skill Matcher</h1>
+            <p>Analyze your resume against GitHub and LinkedIn profiles</p>
+        </div>
 
-        <form method="POST" enctype="multipart/form-data">
-            <label>Upload Resume (PDF):</label><br><br>
-            <input type="file" name="resume" required><br><br>
+        <div class="dashboard">
+            <div class="upload-section">
+                <h2>📤 Upload Your Information</h2>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="github">🐙 GitHub Username:</label>
+                        <input type="text" id="github" name="github" placeholder="e.g. golukumar" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="linkedin">💼 LinkedIn Profile URL:</label>
+                        <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">📧 LinkedIn Email:</label>
+                        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">🔒 LinkedIn Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Your LinkedIn password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="file-input">
+                            📄 Upload Resume (PDF)
+                            <input type="file" name="resume" accept=".pdf" required>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">🚀 Analyze Skills</button>
+                </form>
 
-            <label style="color: red;">Paste Job Description:</label><br><br>
-            <textarea name="job" rows="10" required placeholder="Paste job description here..."></textarea><br>
+                <div class="feature-highlight">
+                    <h4>🔐 Privacy & Security</h4>
+                    <p>Your data is processed securely and not stored permanently on our servers.</p>
+                </div>
+            </div>
 
-            <input type="submit" value="🧠 Analyze Resume">
-        </form>
+            <div class="results-section">
+                <h2>📊 Analysis Results</h2>
+                
+                <!-- This section will be populated with template data -->
+                {% if github_skills or linkedin_skills %}
+                <div class="skill-cards">
+                    {% if github_skills %}
+                    <div class="skill-card">
+                        <h3>🐙 GitHub Skills</h3>
+                        <p>{{ github_skills }}</p>
+                        <div class="score-display">{{ github_score }}%</div>
+                        <div class="score-label">Match Score</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width:{{ github_score }}%"></div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if linkedin_skills %}
+                    <div class="skill-card">
+                        <h3>💼 LinkedIn Skills</h3>
+                        <p>{{ linkedin_skills }}</p>
+                        <div class="score-display">{{ linkedin_score }}%</div>
+                        <div class="score-label">Match Score</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width:{{ linkedin_score }}%"></div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                {% if resume_length %}
+                <div class="resume-info">
+                    <h3>📄 Resume Analysis</h3>
+                    <div class="length">{{ resume_length }}</div>
+                    <p>characters analyzed</p>
+                </div>
+                {% endif %}
+                
+                {% else %}
+                <div class="empty-state">
+                    <div class="icon">📈</div>
+                    <h3>Ready to Analyze</h3>
+                    <p>Upload your resume and provide your GitHub and LinkedIn information to get started with skill matching analysis.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
 
-        {% if category %}
-        <h3>📌 Predicted Category: {{ category }}</h3>
-        <h3>🎯 Match Score: {{ score | round(2) }}%</h3>
-        <h3>🧠 Extracted Skills:</h3>
-        <p>{{ skill | join(', ') }}</p>
-        {% endif %}
+        <div class="feature-highlight">
+            <h4>✨ How it works</h4>
+            <p>Our AI analyzes your resume content against your GitHub repositories and LinkedIn profile to identify skill gaps and matches, helping you optimize your professional presence.</p>
+        </div>
     </div>
 </body>
 </html>
