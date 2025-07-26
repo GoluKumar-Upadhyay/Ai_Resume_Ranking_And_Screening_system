@@ -95,20 +95,20 @@ def analyze_description():
             return "❌ Please enter a job description."
 
         try:
-            # ➤ Extract and clean
+            
             file_stream = resume_file.stream
             raw_text = extract_text_from_pdf_file(file_stream)
             cleaned = clean_resume(raw_text)
 
-            # ➤ Vectorize resume and job description
+            
             resume_vec = vectorizer.transform([cleaned])
             job_vec = vectorizer.transform([clean_resume(job_description)])
 
-            # ➤ Predict category
+            
             pred_id = clf.predict(resume_vec)[0]
             category = get_category_name(pred_id)
 
-            # ➤ Extract skills and match score
+            
             skills = extract_skills(raw_text)
             similarity = cosine_similarity(job_vec, resume_vec).flatten()[0]
 
@@ -123,22 +123,8 @@ def analyze_description():
 
 
 all_skills = [
-    "Python", "Java", "JavaScript", "C++", "C#", "Go", "Rust", "Ruby", "PHP", "Swift",
-        "Kotlin", "TypeScript", "Scala", "R", "MATLAB", "SQL", "NoSQL", "MongoDB", "PostgreSQL", "MySQL",
-        "React", "Angular", "Vue.js", "HTML", "CSS", "SASS", "Bootstrap", "Tailwind CSS", "jQuery",
-        "Node.js", "Express.js", "Django", "Flask", "Spring Boot", "Laravel", "ASP.NET",
-        "REST API", "GraphQL", "JSON", "AJAX", "FastAPI", "Git", "GitHub", "GitLab", "Docker",
-        "Kubernetes", "Jenkins", "CI/CD", "Ansible", "Terraform", "Vagrant", "AWS", "Azure", "Google Cloud",
-        "Linux", "Unix", "Windows Server", "Shell Scripting", "Bash", "PowerShell", "Machine Learning",
-        "Deep Learning", "TensorFlow", "PyTorch", "Scikit-learn", "Pandas", "NumPy", "Matplotlib", "Seaborn",
-        "Jupyter", "Keras", "XGBoost", "OpenCV", "Data Analysis", "Data Science", "Big Data", "Apache Spark",
-        "Hadoop", "Tableau", "Power BI", "Excel", "Google Analytics", "ETL", "Airflow", "Kafka", "dbt",
-        "Snowflake", "Looker", "Artificial Intelligence", "Natural Language Processing", "Computer Vision",
-        "Neural Networks", "Statistics", "Probability", "Mathematics", "Algorithms", "Data Structures",
-        "Problem Solving", "Project Management", "Agile", "Scrum", "Kanban", "JIRA", "Confluence", "Slack",
-        "Microsoft Teams", "Zoom", "Communication", "Leadership", "Team Management", "Time Management",
-        "Critical Thinking", "Analytical Thinking", "Creative Thinking", "Attention to Detail", "Multitasking",
-        "Adaptability", "Collaboration", "Presentation Skills", "Decision Making", "Self-Motivation"
+    "python", "java", "javascript", "html", "css", "sql", "mongodb", "flask", "react", "node.js",
+    "data science", "machine learning"
 ]
 skill_variations = {"node.js": ["nodejs"], "data science": ["data-science"]}
 
@@ -257,3 +243,6 @@ def index():
 
 
 
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))  
+    app.run(debug=True, host='0.0.0.0', port=port)
